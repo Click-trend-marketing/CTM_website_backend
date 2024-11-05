@@ -26,8 +26,6 @@ const createForm = async (req, res) => {
             <p><strong>Message:</strong></p>
             <p>${message}</p>
         `;
-
-
         // Send email
         await sendMail(companyEmail, mailSubject, mailBody);
 

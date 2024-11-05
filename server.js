@@ -17,6 +17,10 @@ const options = {
       version: '1.0.0',
       description: 'CRUD API with MongoDB documentation',
     },
+    servers: [
+      { url: "http://62.72.30.215", description: "Live server" },
+      { url: "http://localhost:4000", description: "Local server" },
+  ],
     components: {
       securitySchemes: {
         bearerAuth: {
