@@ -8,7 +8,7 @@ const app = express();
 
 // Allow CORS from both live and local environments
 const corsOptions = {
-  origin: ['http://62.72.30.215:8000', 'http://localhost:4000', 'http://localhost:3000'], // Live and local origins
+  origin: ['http://62.72.30.215', 'http://localhost:4000', 'http://localhost:3000'], // Live and local origins
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
 };
 
