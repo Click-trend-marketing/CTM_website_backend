@@ -17,7 +17,7 @@ const options = {
       description: 'CRUD API with MongoDB documentation',
     },
     servers: [
-      { url: "http://62.72.30.215:8000", description: "Live server" }, // Live server on port 8000
+      { url: "https://clicktrendmarketing.com", description: "Live server" }, // Updated live server URL
       { url: "http://localhost:4000", description: "Local server" }, // Local server on port 4000
     ],
     components: {
@@ -30,13 +30,15 @@ const options = {
       },
     },
   },
-  apis: ['./routes/*.js'], 
+  apis: ['./routes/*.js'], // Path to your API docs
 };
 
 const openapiSpecification = swaggerJsdoc(options);
 
 // Serve Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
+
+// Import your routes (already handled in app.js)
 app.use('/api/', require('./routes/users.route'));
 
 // Start the server
