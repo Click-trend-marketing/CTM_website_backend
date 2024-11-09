@@ -6,17 +6,21 @@ dotenv.config();
 
 const app = express();
 
-// Allow CORS from both live and local environments
+// Allow CORS from live and local environments
 const corsOptions = {
-  origin: ['http://62.72.30.215', 'http://localhost:4000', 'http://localhost:3000'], // Live and local origins
+  origin: [
+    'https://clicktrendmarketing.com', // Live URL
+    'http://localhost:4000',           // Local environment
+    'http://localhost:3000',           // Local development (React default)
+  ], 
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
 };
 
-app.use(cors(corsOptions)); // Apply CORS middleware
-app.use(express.json()); // Parse JSON requests
+app.use(cors(corsOptions)); // Apply CORS middleware globally
+app.use(express.json());    // Parse JSON requests
 
 // Database connection
-const conn = require('./database/db');
+const conn = require('./database/db'); 
 mongoose.connect(conn.url)
   .then(() => {
     console.log("Database Connected Successfully!!");
@@ -26,4 +30,5 @@ mongoose.connect(conn.url)
     process.exit();
   });
 
+// Export app for use in server.js
 module.exports = app;

@@ -29,7 +29,7 @@ const createForm = async (req, res) => {
         // Send email
         await sendMail(companyEmail, mailSubject, mailBody);
 
-        res.status(201).json({ message: "Form submitted successfully, we will get back to you shortly" });
+        res.status(201).json({ message: "Form submitted! We'll get back to you soon." });
     } catch (error) {
         console.error(error);
         res.status(400).json({ message: "An error occurred while processing the form" });
