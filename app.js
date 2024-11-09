@@ -8,12 +8,7 @@ const app = express();
 
 // Allow CORS from live and local environments
 const corsOptions = {
-  origin: [
-    'https://clicktrendmarketing.com', // Live URL
-    'http://62.72.30.215',             // IP address
-    'http://localhost:4000',           // Local environment
-    'http://localhost:3000',           // Local development (React default)
-  ], 
+  origin: '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
 };
 
