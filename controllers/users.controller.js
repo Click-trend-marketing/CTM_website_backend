@@ -12,7 +12,7 @@ const createForm = async (req, res) => {
         // }
 
         // Save form data in database
-        const form = new UserModel({ name, email, subject, message });
+        const form = new UserModel({ name, email, subject, message, role: 'user' });
         const savedForm = await form.save();
 
         // Email setup
@@ -35,6 +35,7 @@ const createForm = async (req, res) => {
         res.status(400).json({ message: "An error occurred while processing the form" });
     }
 };
+
 
 module.exports = {
     createForm
