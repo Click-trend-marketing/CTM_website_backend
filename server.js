@@ -39,6 +39,7 @@ const openapiSpecification = swaggerJsdoc(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use('/api/', require('./routes/users.route'));
+app.use('/api/', require('./routes/admin.route'));
 
 // Start the server
 server.listen(PORT, () => {
