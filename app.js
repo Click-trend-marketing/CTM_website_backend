@@ -6,17 +6,11 @@ dotenv.config();
 
 const app = express();
 
-// Allow CORS from live and local environments
-const corsOptions = {
-  origin: '*',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
-};
-
-app.use(cors(corsOptions)); // Apply CORS middleware globally
-app.use(express.json());    // Parse JSON requests
+app.use(cors())
+app.use(express.json()); // Parse JSON requests
 
 // Database connection
-const conn = require('./database/db'); 
+const conn = require('./database/db');
 mongoose.connect(conn.url)
   .then(() => {
     console.log("Database Connected Successfully!!");
