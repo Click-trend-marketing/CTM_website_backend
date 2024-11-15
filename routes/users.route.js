@@ -47,6 +47,25 @@ const UserController = require("../controllers/users.controller")
 router.post('/form/create', UserController.createForm);
 
 
+/**
+ * @swagger
+ * /api/getUserData:
+ *   get:
+ *     tags:
+ *       - User
+ *     summary: Get user data
+ *     description: Allows the admin to retrieve user data.
+ *     responses:
+ *       200:
+ *         description: User data retrieved successfully
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Could not retrieve the user data
+ */
+router.get('/getUserData', UserController.getUserData);
+
+
 module.exports = router
 
 

@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { JWT_SECRET_KEY } = require('../utility/config');
 const User = require('../models/users.model');
+const Content = require('../models/content.model');
 
 // Admin Signup
 
@@ -75,42 +76,44 @@ const adminLogin = async (req, res) => {
     }
 };
 
-
 // Admin update User Data
 
 const updateUserData = async (req, res) => {
     try {
-        const { projectsDone, totalClients, adminUpdatedEmail } = req.body;
+        const updateFields = {};
 
-        const updateData = {};
-        if (projectsDone !== undefined) updateData.projectsDone = projectsDone;
-        if (totalClients !== undefined) updateData.totalClients = totalClients;
-        if (adminUpdatedEmail) updateData.adminUpdatedEmail = adminUpdatedEmail;
+        const { projectsDone, totalClients, adminUpdatedEmail, phone, address } = req.body;
 
-        if (Object.keys(updateData).length === 0) {
-            return res.status(400).json({ message: "No valid fields to update" });
+        if (projectsDone !== undefined) updateFields.projectsDone = projectsDone;
+        if (totalClients !== undefined) updateFields.totalClients = totalClients;
+        if (adminUpdatedEmail !== undefined) updateFields.adminUpdatedEmail = adminUpdatedEmail;
+        if (phone !== undefined) updateFields.phone = phone;
+        if (address !== undefined) updateFields.address = address;
+
+        if (Object.keys(updateFields).length === 0) {
+            return res.status(400).json({ statusCode: 400, message: "No valid fields to update" });
         }
 
-        if (req.user.role !== 'admin') {
-            return res.status(403).json({ message: "Unauthorized: Only admin can update this information" });
-        }
-
-        const updatedUser = await User.findByIdAndUpdate(
-            req.user.userId,
-            { $set: updateData },
+        // Attempt to update the document
+        let updatedUser = await Content.findOneAndUpdate(
+            {},
+            updateFields,
             { new: true }
         );
 
+        // If no document was found, create one
         if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
+            updatedUser = new Content(updateFields);
+            await updatedUser.save();
         }
 
-        return res.status(200).json({ message: "User updated successfully", updatedUser });
+        return res.status(200).json({ message: "Content updated successfully", updatedUser });
     } catch (error) {
         console.error(error);
-        return res.status(400).json({ statusCode: 400, message: "Could not update the user data" });
+        return res.status(400).json({ statusCode: 400, message: "Could not update the content" });
     }
 };
+
 
 
 module.exports = {
