@@ -40,7 +40,7 @@ const openapiSpecification = swaggerJsdoc(options);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(openapiSpecification));
 app.use('/api/', require('./routes/users.route'));
 app.use('/api/', require('./routes/admin.route'));
-
+app.use('/api/', require('./routes/career.route'));
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -22,19 +22,6 @@ const userSchema = new mongoose.Schema({
     message: {
         type: String
     },
-    projectsDone: {
-        type: Number,
-        default: 0
-    },
-    totalClients: {
-        type: Number,
-        default: 0
-    },
-    adminUpdatedEmail: {
-        type: String,
-        lowercase: true,
-        trim: true
-    },
     role: {
         type: String,
         enum: ['user', 'admin'], 

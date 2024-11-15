@@ -94,9 +94,15 @@ router.post('/login', AdminController.adminLogin);
  *               totalClients:
  *                 type: integer
  *                 example: 50
+ *               phone:
+ *                 type: string
+ *                 example: "+91 98154 98660"  
  *               adminUpdatedEmail:
  *                 type: string
- *                 example: "admin@example.com"
+ *                 example: "support@clicktrendmarketing.com"
+ *               address:
+ *                 type: string
+ *                 example: "Plot No. C-201, 3rd floor, Platina tower, Phase 8B, Sector 74, Mohali"
  *     responses:
  *       200:
  *         description: User data updated successfully
@@ -108,7 +114,6 @@ router.post('/login', AdminController.adminLogin);
  *         description: Could not update the user data
  */
 router.put('/updateUserData', jwtVerify, roleAuth('admin'), AdminController.updateUserData);
-
 
 
 module.exports = router;
