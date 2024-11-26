@@ -1,4 +1,5 @@
 const Career = require('../models/career.model');
+const Applicant = require('../models/applicants.model');
 
 // Add a new career entry
 
@@ -63,7 +64,7 @@ const updateCareerData = async (req, res) => {
 
 const getCareerData = async (req, res) => {
     try {
-        const career = await Career.findOne();
+        const career = await Career.find();
         if (!career) {
             return res.status(400).json({ statusCode: 400, message: "No content found" });
         }
@@ -76,6 +77,9 @@ const getCareerData = async (req, res) => {
 
 
 // Admin get Career Data By Id
+
+
+
 
 const getCareerDataById = async (req, res) => {
     const { id } = req.params; // Extract ID from request parameters
@@ -107,11 +111,48 @@ const deleteCareerById = async (req, res) => {
     }
 };
 
+const applyForJob = async (req, res) => {
+    try {
+        const { jobId, name, email } = req.body;
+
+        // Validate required fields
+        if (!jobId || !name || !email || !req.file) {
+            return res.status(400).json({ statusCode: 400, message: "All fields are required, including the resume file." });
+        }
+
+        // Check if the job exists
+        const job = await Career.findById(jobId);
+        if (!job) {
+            return res.status(404).json({ statusCode: 404, message: "Job not found" });
+        }
+
+        // Create a new application entry
+        const newApplication = new Applicant({
+            jobId,
+            name,
+            email,
+            resume: req.file.path, // Save the file path of the uploaded resume
+        });
+
+        // Save the application to the database
+        const savedApplication = await newApplication.save();
+
+        return res.status(201).json({
+            message: "Application submitted successfully",
+            application: savedApplication,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ statusCode: 500, message: error.message || "An error occurred while submitting the application" });
+    }
+};
+
 
 module.exports = {
     getCareerData,
     updateCareerData,
     addCareerData,
     getCareerDataById,
-    deleteCareerById
+    deleteCareerById,
+    applyForJob
 };
