@@ -26,12 +26,12 @@ const {jwtVerify, roleAuth} = require("../middleware/jwt")
  *                 type: string
  *               experience:
  *                 type: string
+ *               vacancy:
+ *                 type: string
  *               requirements:
  *                 type: array
  *                 items:
  *                   type: string
- *               location:
- *                 type: string
  *     responses:
  *       201:
  *         description: New career entry added successfully
@@ -46,14 +46,21 @@ router.post('/addCareerData', jwtVerify, roleAuth('admin'), CareerController.add
 
 /**
  * @swagger
- * /api/updateCareerData:
+ * /api/updateCareerData/{careerId}:
  *   put:
  *     tags:
  *       - Career
- *     summary: Admin updates the user career data
- *     description: Allows the admin to update specific user career-related information.
+ *     summary: Admin updates the user career data by ID
+ *     description: Allows the admin to update specific career-related information by providing a career ID.
  *     security:
  *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: careerId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the career document to update
  *     requestBody:
  *       required: true
  *       content:
@@ -75,15 +82,15 @@ router.post('/addCareerData', jwtVerify, roleAuth('admin'), CareerController.add
  *                 example: "Mohali"
  *     responses:
  *       200:
- *         description: User data updated successfully
+ *         description: Career data updated successfully
  *       400:
- *         description: Invalid input
+ *         description: Invalid input or career ID not provided
  *       404:
- *         description: User not found
+ *         description: Career data not found
  *       500:
  *         description: Internal server error
  */
-router.put('/updateCareerData', jwtVerify, roleAuth('admin'), CareerController.updateCareerData);
+router.put('/updateCareerData/:careerId', jwtVerify, roleAuth('admin'), CareerController.updateCareerData);
 
 // This route is to get career data
 
