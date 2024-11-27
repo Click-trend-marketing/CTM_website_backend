@@ -5,7 +5,7 @@ const careerSchema = new mongoose.Schema({
     position: { type: String, required: true },
     experience : { type: String, required: true },
     requirements: [{ type: String, required: true }],
-    location: { type: String, default: "Mohali" },
+    vacancy : { type: String, required: true },
 },
  {
     timestamps: {  

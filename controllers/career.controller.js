@@ -1,14 +1,13 @@
 const Career = require('../models/career.model');
-const Applicant = require('../models/applicants.model');
 
 // Add a new career entry
 
 const addCareerData = async (req, res) => {
     try {
-        const { position, experience, requirements, location } = req.body;
+        const { position, experience, requirements, vacancy } = req.body;
 
         // Validate required fields
-        if (!position || !experience || !requirements || !location) {
+        if (!position || !experience || !requirements || !vacancy) {
             return res.status(400).json({ statusCode: 400, message: "All fields are required" });
         }
         // Create a new career entry
@@ -16,7 +15,7 @@ const addCareerData = async (req, res) => {
             position,
             experience,
             requirements,
-            location
+            vacancy
         });
         // Save the new career entry to the database
         const savedCareer = await newCareer.save();
@@ -31,34 +30,44 @@ const addCareerData = async (req, res) => {
 
 const updateCareerData = async (req, res) => {
     try {
+        const { careerId } = req.params; 
         const updateFields = {};
-        const { position, experience, requirements, location } = req.body;
+        const { position, experience, requirements, location, vacancy } = req.body;
 
+        if (!careerId) {
+            return res.status(400).json({ statusCode: 400, message: "Career ID is required" });
+        }
+
+        // Populate the fields to update if they are provided
         if (position !== undefined) updateFields.position = position;
         if (experience !== undefined) updateFields.experience = experience;
         if (requirements !== undefined) updateFields.requirements = requirements;
         if (location !== undefined) updateFields.location = location;
+        if (vacancy !== undefined) updateFields.vacancy = vacancy;
 
         if (Object.keys(updateFields).length === 0) {
             return res.status(400).json({ statusCode: 400, message: "No valid fields to update" });
         }
-        // Attempt to update the document
-        let updatedUser = await Career.findOneAndUpdate(
-            {},
+
+        // Attempt to update the document by careerId
+        let updatedCareer = await Career.findOneAndUpdate(
+            { _id: careerId }, // Filter by careerId
             updateFields,
-            { new: true }
+            { new: true } // Return the updated document
         );
-        // If no document was found, create one
-        if (!updatedUser) {
-            updatedUser = new Career(updateFields);
-            await updatedUser.save();
+
+        // If no document was found, return a not found error
+        if (!updatedCareer) {
+            return res.status(404).json({ statusCode: 404, message: "Career data not found" });
         }
-        return res.status(200).json({ message: "Content updated successfully", updatedUser });
+
+        return res.status(200).json({ message: "Career data updated successfully", updatedCareer });
     } catch (error) {
         console.error(error);
-        return res.status(400).json({ statusCode: 400, message: "Could not update the content" });
+        return res.status(500).json({ statusCode: 500, message: "Internal server error", error });
     }
 };
+
 
 // Admin get Career Data
 
@@ -77,8 +86,6 @@ const getCareerData = async (req, res) => {
 
 
 // Admin get Career Data By Id
-
-
 
 
 const getCareerDataById = async (req, res) => {
@@ -111,41 +118,6 @@ const deleteCareerById = async (req, res) => {
     }
 };
 
-const applyForJob = async (req, res) => {
-    try {
-        const { jobId, name, email } = req.body;
-
-        // Validate required fields
-        if (!jobId || !name || !email || !req.file) {
-            return res.status(400).json({ statusCode: 400, message: "All fields are required, including the resume file." });
-        }
-
-        // Check if the job exists
-        const job = await Career.findById(jobId);
-        if (!job) {
-            return res.status(404).json({ statusCode: 404, message: "Job not found" });
-        }
-
-        // Create a new application entry
-        const newApplication = new Applicant({
-            jobId,
-            name,
-            email,
-            resume: req.file.path, // Save the file path of the uploaded resume
-        });
-
-        // Save the application to the database
-        const savedApplication = await newApplication.save();
-
-        return res.status(201).json({
-            message: "Application submitted successfully",
-            application: savedApplication,
-        });
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({ statusCode: 500, message: error.message || "An error occurred while submitting the application" });
-    }
-};
 
 
 module.exports = {
@@ -154,5 +126,4 @@ module.exports = {
     addCareerData,
     getCareerDataById,
     deleteCareerById,
-    applyForJob
 };
