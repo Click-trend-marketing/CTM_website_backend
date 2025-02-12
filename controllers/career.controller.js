@@ -51,9 +51,9 @@ const updateCareerData = async (req, res) => {
 
         // Attempt to update the document by careerId
         let updatedCareer = await Career.findOneAndUpdate(
-            { _id: careerId }, // Filter by careerId
+            { _id: careerId }, 
             updateFields,
-            { new: true } // Return the updated document
+            { new: true } 
         );
 
         // If no document was found, return a not found error
@@ -87,7 +87,6 @@ const getCareerData = async (req, res) => {
 
 // Admin get Career Data By Id
 
-
 const getCareerDataById = async (req, res) => {
     const { id } = req.params; // Extract ID from request parameters
     try {
@@ -117,7 +116,6 @@ const deleteCareerById = async (req, res) => {
         return res.status(400).json({statusCode: 400, message: "Could not delete the career data"});
     }
 };
-
 
 
 module.exports = {
