@@ -26,7 +26,7 @@ const {jwtVerify, roleAuth} = require("../middleware/jwt")
  *                 example: admin@example.com
  *               password:
  *                 type: string
- *                 example: admin123
+ *                 example: CTM@1234
  *     responses:
  *       201:
  *         description: Admin registered successfully
@@ -36,8 +36,6 @@ const {jwtVerify, roleAuth} = require("../middleware/jwt")
  *         description: Server error
  */
 router.post('/signup', AdminController.adminSignup);
-
-
 
 /**
  * @swagger
@@ -59,7 +57,7 @@ router.post('/signup', AdminController.adminSignup);
  *                 example: admin@example.com
  *               password:
  *                 type: string
- *                 example: admin123
+ *                 example: CTM@1234
  *     responses:
  *       200:
  *         description: Login successful and returns JWT token
@@ -69,7 +67,6 @@ router.post('/signup', AdminController.adminSignup);
  *         description: Server error
  */
 router.post('/login', AdminController.adminLogin);
-
 
 /**
  * @swagger

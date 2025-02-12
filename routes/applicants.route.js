@@ -1,6 +1,6 @@
 const express = require('express');
 const ApplicantsController = require('../controllers/applicants.controller');
-const { upload, handleUploadError } = require('../middleware/fileUploading');
+const { uploadFiles, handleUploadError } = require('../middleware/fileUploading');
 const router = express.Router();
 
 /**
@@ -44,7 +44,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/applyForJob', upload, handleUploadError, ApplicantsController.applyForJob);
+router.post('/applyForJob', uploadFiles, handleUploadError, ApplicantsController.applyForJob);
 
 
 /**
