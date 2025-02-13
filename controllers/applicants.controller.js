@@ -2,46 +2,6 @@ const Applicant = require('../models/applicants.model');
 const Career = require('../models/career.model');
 
 
-// const applyForJob = async (req, res) => {
-//     try {
-//         const { jobId, name, email } = req.body;
-
-//         // Validate required fields
-//         if (!jobId || !name || !email || !req.file) {
-//             return res.status(400).json({ statusCode: 400, message: "All fields are required, including the resume file." });
-//         }
-
-//         const job = await Career.findById(jobId);
-//         if (!job) {
-//             return res.status(404).json({ statusCode: 404, message: "Job not found", });
-//         }
-
-//         // Generate a public URL for the uploaded resume
-//         const resumeURL = `${req.protocol}://${req.get('host')}/uploads/resumes/${req.file.filename}`;
-
-//         // Create a new application entry
-//         const newApplication = new Applicant({
-//             jobId,
-//             name,
-//             email,
-//             resume: resumeURL,
-//         });
-
-//         const savedApplication = await newApplication.save();
-
-//         return res.status(201).json({
-//             statusCode: 201, message: "Application submitted successfully", application: savedApplication,
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(400).json({
-//             statusCode: 400, message: "An error occurred while submitting the application",
-//         });
-//     }
-// };
-
-
-
 const applyForJob = async (req, res) => {
     try {
         const { jobId, name, email } = req.body;
@@ -56,9 +16,8 @@ const applyForJob = async (req, res) => {
             return res.status(404).json({ statusCode: 404, message: "Job not found", });
         }
 
-        // Use a fixed admin panel base URL
-        const BASE_URL = "http://admin.clicktrendmarketing.com"; 
-        const resumeURL = `${BASE_URL}/uploads/resumes/${req.file.filename}`;
+        // Generate a public URL for the uploaded resume
+        const resumeURL = `${req.protocol}://${req.get('host')}/uploads/resumes/${req.file.filename}`;
 
         // Create a new application entry
         const newApplication = new Applicant({
@@ -80,6 +39,9 @@ const applyForJob = async (req, res) => {
         });
     }
 };
+
+
+
 
 
 
