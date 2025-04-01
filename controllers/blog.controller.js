@@ -23,6 +23,7 @@ const addBlogData = async (req, res) => {
         const blogImages = req.files?.blogImages ? req.files.blogImages.map(file => `${baseUrl}${file.filename}`) : [];
 
         // Parse tags (Ensure it’s an array)
+
         tags = tags ? (Array.isArray(tags) ? tags : tags.split(",")) : [];
 
         // Parse published (Ensure it’s a boolean)
@@ -48,12 +49,9 @@ const addBlogData = async (req, res) => {
         return res.status(201).json({ message: "New blog entry added successfully", blog: savedBlog });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ statusCode: 500, message: "Could not add the blog data", error: error.message });
+        return res.status(400).json({ statusCode: 400, message: "Could not add the blog data", error: error.message });
     }
 };
-
-
-
 
 // Update blog entry by ID
 const updateBlogData = async (req, res) => {
@@ -64,7 +62,6 @@ const updateBlogData = async (req, res) => {
         if (!blogId) {
             return res.status(400).json({ statusCode: 400, message: "Blog ID is required" });
         }
-
         const updateFields = {};
         if (title !== undefined) updateFields.title = title;
         if (featuredImage !== undefined) updateFields.featuredImage = featuredImage;
@@ -82,7 +79,7 @@ const updateBlogData = async (req, res) => {
         return res.status(200).json({ message: "Blog data updated successfully", blog: updatedBlog });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ statusCode: 500, message: "Internal server error", error: error.message });
+        return res.status(400).json({ statusCode: 400, message: "Could not update the blog data", error: error.message });
     }
 };
 
@@ -96,7 +93,7 @@ const getBlogData = async (req, res) => {
         return res.status(200).json({ message: "Blog data retrieved successfully", blogs });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ statusCode: 500, message: "Could not retrieve the blog data", error: error.message });
+        return res.status(400).json({ statusCode: 400, message: "Could not retrieve the blog data", error: error.message });
     }
 };
 
@@ -112,7 +109,7 @@ const getBlogDataById = async (req, res) => {
         return res.status(200).json({ message: "Blog data retrieved successfully", blog });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ statusCode: 500, message: "Could not retrieve the blog data", error: error.message });
+        return res.status(400).json({ statusCode: 400, message: "Could not retrieve the blog data", error: error.message });
     }
 };
 
@@ -128,7 +125,7 @@ const deleteBlogById = async (req, res) => {
         return res.status(200).json({ message: "Blog data deleted successfully" });
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ statusCode: 500, message: "Could not delete the blog data", error: error.message });
+        return res.status(400).json({ statusCode: 400, message: "Could not delete the blog data", error: error.message });
     }
 };
 
