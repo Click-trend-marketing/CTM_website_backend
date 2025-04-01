@@ -1,6 +1,9 @@
-const express = require('express');
-const ApplicantsController = require('../controllers/applicants.controller');
-const { uploadFiles, handleUploadError } = require('../middleware/fileUploading');
+const express = require("express");
+const ApplicantsController = require("../controllers/applicants.controller");
+const {
+  uploadFiles,
+  handleUploadError,
+} = require("../middleware/fileUploading");
 const router = express.Router();
 
 /**
@@ -44,8 +47,12 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post('/applyForJob', uploadFiles, handleUploadError, ApplicantsController.applyForJob);
-
+router.post(
+  "/applyForJob",
+  uploadFiles,
+  handleUploadError,
+  ApplicantsController.applyForJob
+);
 
 /**
  * @swagger
@@ -63,7 +70,76 @@ router.post('/applyForJob', uploadFiles, handleUploadError, ApplicantsController
  *       500:
  *         description: Internal server error
  */
-router.get('/getApplicants', ApplicantsController.getApplicants);
+router.get("/getApplicants", ApplicantsController.getApplicants);
+
+/**
+ * @swagger
+ * /api/joiningForm:
+ *   post:
+ *     summary: Submit a job application
+ *     description: Accepts the details of a job applicant and submits the application.
+ *     tags:
+ *       - Job Applications
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *               email:
+ *                 type: string
+ *                 format: email
+ *               address:
+ *                 type: string
+ *               position:
+ *                 type: string
+ *               experience:
+ *                 type: integer
+ *                 example: 5
+ *               phoneNumber:
+ *                 type: string
+ *               referralName:
+ *                 type: string
+ *               referralNumber:
+ *                 type: string
+ *               familyRelationName:
+ *                 type: string
+ *               familyRelationNumber:
+ *                 type: string
+ *               referredToUs:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Application submitted successfully
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Job not found
+ *       500:
+ *         description: Internal server error
+ */
+router.post("/joiningForm", ApplicantsController.joiningForm);
+
+/**
+ * @swagger
+ * /api/getJoining:
+ *   get:
+ *     summary: Get a list of all applicants with their job details
+ *     description: Retrieve a list of applicants along with the job details they applied for.
+ *     tags:
+ *       - Job Applications
+ *     responses:
+ *       200:
+ *         description: Applicants retrieved successfully
+ *       404:
+ *         description: No applicants found
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/getJoining", ApplicantsController.getJoining);
 
 /**
  * @swagger
@@ -88,6 +164,6 @@ router.get('/getApplicants', ApplicantsController.getApplicants);
  *       400:
  *         description: Bad request or error occurred
  */
-router.delete('/deleteApplicant/:id', ApplicantsController.deleteApplicant);
+router.delete("/deleteApplicant/:id", ApplicantsController.deleteApplicant);
 
 module.exports = router;
