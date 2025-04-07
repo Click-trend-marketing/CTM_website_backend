@@ -135,10 +135,7 @@ const joiningForm = async (req, res) => {
 
 const getJoining = async (req, res) => {
   try {
-    const applicants = await Applicant.find({
-      familyRelationName: { $exists: true, $ne: null, $ne: "" },
-      familyRelationNumber: { $exists: true, $ne: null, $ne: "" },
-    });
+    const applicants = await Applicant.find();
 
     // If no applicants are found
     if (!applicants || applicants.length === 0) {
