@@ -99,6 +99,8 @@ router.get("/getApplicants", ApplicantsController.getApplicants);
  *               experience:
  *                 type: integer
  *                 example: 5
+ *               relation:
+ *                 type: string
  *               phoneNumber:
  *                 type: string
  *               referralName:

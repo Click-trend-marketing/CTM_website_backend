@@ -50,6 +50,10 @@ const ApplicantSchema = new mongoose.Schema({
         type: String,
         trim: true,
     },
+    relation: {
+        type: String,
+        trim: true,
+    },
     referredToUs: {
         type: String,
         trim: true,
