@@ -5,6 +5,7 @@ const blogSchema = new mongoose.Schema({
     featuredImage: { type: String, required: true }, 
     blogImages: [{ type: String, required: false }], // Array to store multiple image URLs
     content: { type: String, required: true },
+    slug: { type: String, required: true, unique: true }, 
     tags: [{ type: String, required: false }], // Array to store multiple tags
     published: { type: Boolean, default: false },
 }, 
