@@ -29,6 +29,8 @@ const router = express.Router();
  *                 format: binary
  *               content:
  *                 type: string
+ *               slug:
+ *                 type: string
  *               blogImages:
  *                 type: array
  *                 items:

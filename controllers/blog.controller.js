@@ -8,7 +8,7 @@ const addBlogData = async (req, res) => {
         console.log("Uploaded Files:", req.files);
 
         // Extract text fields from req.body
-        const { title, content } = req.body;
+        const { title, slug, content } = req.body;
         let { tags, published } = req.body;
 
         // Define Base URL Dynamically

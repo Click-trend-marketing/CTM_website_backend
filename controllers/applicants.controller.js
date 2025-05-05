@@ -171,7 +171,7 @@ const deleteApplicant = async (req, res) => {
       return res
         .status(404)
         .json({ statusCode: 404, message: "Applicant not found." });
-    }
+    }; 
 
     // Delete the applicant
     await Applicant.findByIdAndDelete(id);
