@@ -41,6 +41,7 @@ const addBlogData = async (req, res) => {
             blogImages, // Store array of image URLs
             content,
             tags,
+            slug,
             published
         });
 
