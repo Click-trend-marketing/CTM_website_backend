@@ -1,58 +1,113 @@
 const Blog = require("../models/blog.model");
 
 
+// const addBlogData = async (req, res) => {
+//     try {
+//         // Log request body and files for debugging
+//         console.log("Request Body:", req.body);
+//         console.log("Uploaded Files:", req.files);
+
+//         // Extract text fields from req.body
+//         const { title, slug, content } = req.body;
+//         let { tags, published } = req.body;
+
+//         // Define Base URL Dynamically
+//         const localUrl = `${req.protocol}://${req.get("host")}/uploads/images/`;
+//         const liveUrl = process.env.LIVE_URL ? `${process.env.LIVE_URL}/uploads/images/` : localUrl;
+
+//         // Use live URL if available, otherwise fallback to local
+//         const baseUrl = process.env.NODE_ENV === "production" ? liveUrl : localUrl;
+
+//         // Extract and generate image URLs
+//         const featuredImage = req.files?.featuredImage ? `${baseUrl}${req.files.featuredImage[0].filename}` : null;
+//         const blogImages = req.files?.blogImages ? req.files.blogImages.map(file => `${baseUrl}${file.filename}`) : [];
+
+//         // Parse tags (Ensure it’s an array)
+
+//         tags = tags ? (Array.isArray(tags) ? tags : tags.split(",")) : [];
+
+//         // Parse published (Ensure it’s a boolean)
+//         published = published === "true" || published === true;
+
+//         // Check required fields
+//         if (!title || !featuredImage || !content) {
+//             return res.status(400).json({ statusCode: 400, message: "Title, Featured Image, and Content are required" });
+//         }
+
+//         // Create new Blog instance
+//         const newBlog = new Blog({
+//             title,
+//             featuredImage, // Store URL instead of filename
+//             blogImages, // Store array of image URLs
+//             content,
+//             tags,
+//             slug,
+//             published
+//         });
+
+//         // Save the blog
+//         const savedBlog = await newBlog.save();
+//         return res.status(201).json({ message: "New blog entry added successfully", blog: savedBlog });
+//     } catch (error) {
+//         console.error(error);
+//         return res.status(400).json({ statusCode: 400, message: "Could not add the blog data", error: error.message });
+//     }
+// };
+
+
 const addBlogData = async (req, res) => {
     try {
-        // Log request body and files for debugging
         console.log("Request Body:", req.body);
         console.log("Uploaded Files:", req.files);
 
-        // Extract text fields from req.body
         const { title, slug, content } = req.body;
         let { tags, published } = req.body;
 
-        // Define Base URL Dynamically
-        const localUrl = `${req.protocol}://${req.get("host")}/uploads/images/`;
-        const liveUrl = process.env.LIVE_URL ? `${process.env.LIVE_URL}/uploads/images/` : localUrl;
+        // ✅ Use static public-facing URL
+        const baseUrl = `https://www.clicktrendmarketing.com/uploads/images/`;
 
-        // Use live URL if available, otherwise fallback to local
-        const baseUrl = process.env.NODE_ENV === "production" ? liveUrl : localUrl;
+        const featuredImage = req.files?.featuredImage
+            ? `${baseUrl}${req.files.featuredImage[0].filename}`
+            : null;
 
-        // Extract and generate image URLs
-        const featuredImage = req.files?.featuredImage ? `${baseUrl}${req.files.featuredImage[0].filename}` : null;
-        const blogImages = req.files?.blogImages ? req.files.blogImages.map(file => `${baseUrl}${file.filename}`) : [];
-
-        // Parse tags (Ensure it’s an array)
+        const blogImages = req.files?.blogImages?.map(file => `${baseUrl}${file.filename}`) || [];
 
         tags = tags ? (Array.isArray(tags) ? tags : tags.split(",")) : [];
-
-        // Parse published (Ensure it’s a boolean)
         published = published === "true" || published === true;
 
-        // Check required fields
         if (!title || !featuredImage || !content) {
-            return res.status(400).json({ statusCode: 400, message: "Title, Featured Image, and Content are required" });
+            return res.status(400).json({
+                statusCode: 400,
+                message: "Title, Featured Image, and Content are required",
+            });
         }
 
-        // Create new Blog instance
         const newBlog = new Blog({
             title,
-            featuredImage, // Store URL instead of filename
-            blogImages, // Store array of image URLs
+            slug,
             content,
             tags,
-            slug,
-            published
+            published,
+            featuredImage,
+            blogImages,
         });
 
-        // Save the blog
         const savedBlog = await newBlog.save();
-        return res.status(201).json({ message: "New blog entry added successfully", blog: savedBlog });
+        return res.status(201).json({
+            message: "New blog entry added successfully",
+            blog: savedBlog,
+        });
+
     } catch (error) {
         console.error(error);
-        return res.status(400).json({ statusCode: 400, message: "Could not add the blog data", error: error.message });
+        return res.status(400).json({
+            statusCode: 400,
+            message: "Could not add the blog data",
+            error: error.message,
+        });
     }
 };
+
 
 // Update blog entry by ID
 const updateBlogData = async (req, res) => {
