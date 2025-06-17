@@ -43,6 +43,7 @@ app.use('/api/', require('./routes/admin.route'));
 app.use('/api/', require('./routes/career.route'));
 app.use('/api/', require('./routes/applicants.route'));
 app.use('/api/', require('./routes/blog.routes'));
+app.use('/api/', require('./routes/mail.route'));
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
