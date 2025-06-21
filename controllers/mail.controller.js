@@ -3,23 +3,7 @@ const axios = require("axios");
 const path = require("path");
 
 // Helper to capture payment from Razorpay
-async function capturePayment(paymentId, amount, currency) {
-    const razorpayUrl = `https://api.razorpay.com/v1/payments/${paymentId}/capture`;
-    try {
 
-        const auth = Buffer.from(`rzp_live_pjl8aG4DBFwONM:x1DoPFWIFes0r2sOop79lng1`).toString('base64');
-
-        const response = await axios.post(razorpayUrl, { amount, currency }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Basic ${auth}`
-            },
-        });
-        return response.data;
-    } catch (err) {
-        throw err.response?.data || err.message;
-    }
-}
 
 // Controller for sending mail after capturing payment and including PDF download link
 const sendMailRoute = async (req, res) => {
@@ -28,12 +12,6 @@ const sendMailRoute = async (req, res) => {
         if (!paymentId || !type || !to || !subject) {
             return res.status(400).json({ message: "'paymentId', 'type', 'to', and 'subject' are required." });
         }
-
-        const currency = "INR";
-        await capturePayment(paymentId, amount, currency);
-         capturePayment(paymentId, amount, currency);
-         capturePayment(paymentId, amount, currency);
-
         // 2. Construct PDF download URL based on type
         const baseUrl = 'https://www.clicktrendmarketing.com';
         let pdfUrl = null;
@@ -96,5 +74,4 @@ const sendMailRoute = async (req, res) => {
 
 module.exports = {
     sendMailRoute,
-    capturePayment
 }; 
