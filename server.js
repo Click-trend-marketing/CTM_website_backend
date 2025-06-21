@@ -43,7 +43,8 @@ app.use('/api/', require('./routes/admin.route'));
 app.use('/api/', require('./routes/career.route'));
 app.use('/api/', require('./routes/applicants.route'));
 app.use('/api/', require('./routes/blog.routes'));
-app.use('/api/', require('./routes/mail.route'));
+app.use('/api/', require('./routes/email-mail.route'));
+app.use('/api/', require('./routes/capture-payment.route'));
 // Start the server
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
